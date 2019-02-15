@@ -228,10 +228,22 @@ $(document).ready(function() {
                       }
                     }else if(ddd.success){
                       console.log("GOOD!")
+                      if(ddd.use_ex){
+                        console.log("use")
+                        setTimeout(function(){
+                          console.log("ok")
+                          $(".done").css("display", "inline-block")
+                          $("#applyText").html("Apply SERRF normalization")
+                          $("#apply").prop("disabled", !1);
+                        },30000);
+                      }else{
+                        $(".done").css("display", "inline-block")
+                        $("#applyText").html("Apply SERRF normalization")
+                        $("#apply").prop("disabled", !1);
+                      }
                       
-                      $(".done").css("display", "inline-block")
-                      $("#applyText").html("Apply SERRF normalization")
-                      $("#apply").prop("disabled", !1);
+                      
+                      
                       $("#count_less_20_SERRF").text(ddd.rsds.filter(x=>x<0.2).length) 
                       $("#perc_less_20_SERRF").text(((ddd.rsds.filter(x=>x<0.2).length)/ddd.rsds.length * 100).toFixed(2)+"%") 
                       $("#count_less_20_raw").text(ddd.before_rsds.filter(x=>x<0.2).length) 
