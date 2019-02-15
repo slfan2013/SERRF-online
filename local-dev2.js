@@ -410,6 +410,8 @@ $(document).ready(function() {
                  
                })
               
+            }).catch(function(err){
+              alert("Error: " + err+". Possibly because of network. Please try again.")
             })
             
             
