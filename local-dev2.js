@@ -181,7 +181,7 @@ $(document).ready(function() {
                     Body: "A new SERRF project is created with projec id: " + project_id + ". IP: " + g.ip + ". Status: " + use_ex
                   }).then(function(m){m => console.log(m + " MS.")})
                 }).catch(function(err){
-              alert("Error: " + err+". Possibly because of network. Please try again.")
+              alert("Error: " + err+". Possibly because of slow network. Please try again.")
             })
           })
           
@@ -413,7 +413,7 @@ $(document).ready(function() {
                })
               
             }).catch(function(err){
-              alert("Error: " + err+". Possibly because of network. Please try again.")
+              alert("Error: " + err+". Possibly because of slow network. Please try again.")
             })
             
             
