@@ -180,7 +180,9 @@ $(document).ready(function() {
                     Subject: "new SERRF user",
                     Body: "A new SERRF project is created with projec id: " + project_id + ". IP: " + g.ip + ". Status: " + use_ex
                   }).then(function(m){m => console.log(m + " MS.")})
-                })
+                }).catch(function(err){
+              alert("Error: " + err+". Possibly because of network. Please try again.")
+            })
           })
           
           
