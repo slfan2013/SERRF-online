@@ -200,7 +200,7 @@ $(document).ready(function() {
                f.put(queue).then(function(){
                  
                  
-                 
+                 var error_times = 0 
                  var check_result = function(){
                    console.log("checking result.")
                    
@@ -336,7 +336,17 @@ $(document).ready(function() {
                     }
                     
                     
-                  })
+                  }).catch(function (err) {
+                    console.log("error: "+ err)
+                    error_times++
+                    if(error_times<10){
+                      check_result();
+                    }else{
+                      alert("Unknown Error: "+err". Check your network. Or contact slfan at ucdavis dot edu for help.")
+                    }
+                    
+                    
+                  });
                    
                    
                  }
