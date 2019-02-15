@@ -342,7 +342,7 @@ $(document).ready(function() {
                     if(error_times<10){
                       check_result();
                     }else{
-                      alert("Unknown Error: "+err". Check your network. Or contact slfan at ucdavis dot edu for help.")
+                      alert("Unknown Error: "+err+". Check your network. Or contact slfan at ucdavis dot edu for help.")
                     }
                     
                     
