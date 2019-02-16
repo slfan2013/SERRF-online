@@ -222,11 +222,22 @@ $(document).ready(function() {
                         $("#applyText").html("Apply SERRF normalization")
                         $("#apply").prop("disabled", !1);
                         alert("Calculation Failed. Error Message: " + ddd.error_message);
-                        check_result()
+                        
+                        
+                        setTimeout(function()
+    {
+        check_result()
+
+    }, 5000);
+                        
                         return;
                       }else{
                         console.log("main PC is under maintenance.")
-                        check_result()
+                        setTimeout(function()
+    {
+        check_result()
+
+    }, 5000);
                       }
                     }else if(ddd.success){
                       console.log("GOOD!")
@@ -370,7 +381,11 @@ $(document).ready(function() {
                       
                       
                     }else{
-                      check_result()
+                      setTimeout(function()
+    {
+        check_result()
+
+    }, 5000);
                     }
                     
                     
@@ -378,7 +393,11 @@ $(document).ready(function() {
                     console.log("error: "+ err)
                     error_times++
                     if(error_times<10){
-                      check_result();
+                      setTimeout(function()
+    {
+        check_result()
+
+    }, 5000);
                     }else{
                       alert("Unknown Error: "+err+". Check your network. Or contact slfan at ucdavis dot edu for help.")
                     }
