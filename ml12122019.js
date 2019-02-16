@@ -208,7 +208,11 @@ $(document).ready(function() {
                  var check_result = function(){
                    console.log("checking result.")
                    
-                   var f = new PouchDB("https://slfan:metabolomics@serrf.fiehnlab.ucdavis.edu/db/serrf");
+                   var f = new PouchDB("https://slfan:metabolomics@serrf.fiehnlab.ucdavis.edu/db/serrf",{
+  ajax: {
+    timeout: 60000,
+  }
+});
                   f.get(project_id, {
                     attachments: false
                   }).then(function(doc){
@@ -228,7 +232,7 @@ $(document).ready(function() {
     {
         check_result()
 
-    }, 15000);
+    }, 60000);
                         
                         return;
                       }else{
@@ -237,7 +241,7 @@ $(document).ready(function() {
     {
         check_result()
 
-    }, 15000);
+    }, 60000);
                       }
                     }else if(ddd.success){
                       console.log("GOOD!")
@@ -385,7 +389,7 @@ $(document).ready(function() {
     {
         check_result()
 
-    }, 15000);
+    }, 60000);
                     }
                     
                     
@@ -397,7 +401,7 @@ $(document).ready(function() {
     {
         check_result()
 
-    }, 15000);
+    }, 60000);
                     }else{
                       alert("Unknown Error: "+err+". Check your network. Or contact slfan at ucdavis dot edu for help.")
                     }
