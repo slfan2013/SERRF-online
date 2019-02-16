@@ -228,7 +228,7 @@ $(document).ready(function() {
     {
         check_result()
 
-    }, 5000);
+    }, 15000);
                         
                         return;
                       }else{
@@ -237,7 +237,7 @@ $(document).ready(function() {
     {
         check_result()
 
-    }, 5000);
+    }, 15000);
                       }
                     }else if(ddd.success){
                       console.log("GOOD!")
@@ -385,7 +385,7 @@ $(document).ready(function() {
     {
         check_result()
 
-    }, 5000);
+    }, 15000);
                     }
                     
                     
@@ -397,7 +397,7 @@ $(document).ready(function() {
     {
         check_result()
 
-    }, 5000);
+    }, 15000);
                     }else{
                       alert("Unknown Error: "+err+". Check your network. Or contact slfan at ucdavis dot edu for help.")
                     }
