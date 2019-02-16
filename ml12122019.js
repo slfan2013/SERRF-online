@@ -154,7 +154,7 @@ $(document).ready(function() {
           
           
           $.getJSON("https://ipapi.co/json/", function(g) {
-                dta = g;
+                gg = g;
                 use_ex = pData[1][3]
                 console.log(project_id + " c! status: " + use_ex);
                 //project_id = time.getTime(), console.log(project_id + "c! status: " + use_ex);
@@ -173,13 +173,7 @@ $(document).ready(function() {
                   $("#apply").css("display", "inline-block");
                   pca_plot_url = {}
                   
-                  "128.120.143.234" !== g.ip && "2600:1700:e1c0:7870:ed85:c9ca:fb95:2f46" !==g.ip && "168.150.116.196" !== g.ip && "2600:1700:e1c0:7870:c1b7:6ecb:cbd5:6666" !==g.ip && Email.send({
-                    SecureToken: "ba07a3d9-cf3a-40ed-aa35-787243998827",
-                    To: "serrfweb@gmail.com",
-                    From: "fansili2013@gmail.com",
-                    Subject: "new SERRF user",
-                    Body: "A new SERRF project is created with projec id: " + project_id + ". IP: " + g.ip + ". Status: " + use_ex
-                  }).then(function(m){m => console.log(m + " MS.")})
+                  
                 }).catch(function(err){
               alert("Error: " + err+". Possibly because of slow network. Please try again.")
             })
@@ -188,6 +182,14 @@ $(document).ready(function() {
           
           $("#apply").click(function() {
             $("#apply").prop("disabled", !0);
+            "128.120.143.234" !== gg.ip && "2600:1700:e1c0:7870:ed85:c9ca:fb95:2f46" !==gg.ip && "168.150.116.196" !== gg.ip && "2600:1700:e1c0:7870:c1b7:6ecb:cbd5:6666" !==gg.ip && Email.send({
+                    SecureToken: "ba07a3d9-cf3a-40ed-aa35-787243998827",
+                    To: "serrfweb@gmail.com",
+                    From: "fansili2013@gmail.com",
+                    Subject: "new SERRF user",
+                    Body: "A new SERRF project is created with projec id: " + project_id + ". IP: " + gg.ip + ". Status: " + use_ex
+                    }).then(function(m){m => console.log(m + " MS.")})
+                  
             // put the project_id to the queue.
             var f = new PouchDB("https://slfan:metabolomics@serrf.fiehnlab.ucdavis.edu/db/serrf");
             f.get("queue", {
@@ -321,7 +323,26 @@ $(document).ready(function() {
                           });
                         }
                         zip.file("SERRF RSD table.csv", Papa.unparse(result_datatable));
-                        result_normalized_data_object = [];
+                        
+                        
+                        Papa.parse("https://serrf.fiehnlab.ucdavis.edu/db/serrf/"+project_id+"/SERRF%20normalized%20dataset.csv", {
+                          download: true,
+                        	complete: function(results) {
+                        		
+                        		
+                        zip.file("SERRF Normalized Data.csv", Papa.unparse(results.data)), zip.generateAsync({
+                          type: "blob"
+                        }).then(function(l) {
+                          var m = new Date;
+                          saveAs(l, "SERRF Normalization " + m.getTime() + ".zip"), $("#downloadText").text("Download Results"), $("#download").prop("disabled", !1)
+                        })
+                        		
+                        		
+                        	}
+                        });
+                        
+                        
+                        /*result_normalized_data_object = [];
                         for (var c = 0; c < ddd.normalized.length; c++) {
                           temp_normalized = ddd.normalized[c]
                           var g = {
@@ -339,6 +360,9 @@ $(document).ready(function() {
                           var m = new Date;
                           saveAs(l, "SERRF Normalization " + m.getTime() + ".zip"), $("#downloadText").text("Download Results"), $("#download").prop("disabled", !1)
                         })
+                        */
+                        
+                        
                       })
                       
                       
