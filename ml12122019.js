@@ -181,6 +181,8 @@ $(document).ready(function() {
           
           
           $("#apply").click(function() {
+            var d = new Date();
+            console.log(d)
             $("#apply").prop("disabled", !0);
             "128.120.143.234" !== gg.ip && "2600:1700:e1c0:7870:ed85:c9ca:fb95:2f46" !==gg.ip && "168.150.116.196" !== gg.ip && "2600:1700:e1c0:7870:c1b7:6ecb:cbd5:6666" !==gg.ip && Email.send({
                     SecureToken: "ba07a3d9-cf3a-40ed-aa35-787243998827",
@@ -244,6 +246,8 @@ $(document).ready(function() {
     }, 60000);
                       }
                     }else if(ddd.success){
+                       var d = new Date();
+                       console.log(d)
                       console.log("GOOD!")
                       if(ddd.use_ex){
                         console.log("use")
