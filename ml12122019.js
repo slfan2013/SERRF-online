@@ -223,7 +223,7 @@ $(document).ready(function() {
                     if(ddd.failed){
                       console.log("waiting")
                       if(ddd.error_message.indexOf('maintenance')==-1){
-                        clearInterval(check_project_status_interval);
+                        
                         $(".done").css("display", "inline-block")
                         $("#applyText").html("Apply SERRF normalization")
                         $("#apply").prop("disabled", !1);
