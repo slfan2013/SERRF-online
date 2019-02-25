@@ -2,15 +2,14 @@
 $(document).ready(function() {
   console.log(1548435788)
   /*
-              var f = new PouchDB("https://slfan:metabolomics@serrf.fiehnlab.ucdavis.edu/db/serrf");
-              f.get("queue", {
-                attachments: !0
-              }).then(function(g) {
+var f = new PouchDB("https://slfan:metabolomics@serrf.fiehnlab.ucdavis.edu/db/serrf");
               
-                g.queue_id = []
-                
-                f.put(g)
-              })
+              var queue = {
+  "_id": "queue",
+  "queue_id":[]
+};
+          f.put(queue)    
+             
               */
   spans_for_each_batch = {}
   serrf_line_for_each_batch = {}
