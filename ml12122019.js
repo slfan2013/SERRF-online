@@ -137,7 +137,19 @@ var f = new PouchDB("https://slfan:metabolomics@serrf.fiehnlab.ucdavis.edu/db/se
         }
         batch_index = pData[0].indexOf('batch')
         num_qc_per_batch = _.countBy(qc_index.map(x=>pData[x]).map(x => x[batch_index]))
-        if(Object.values(num_qc_per_batch).filter(x=>x<5).length>1){
+        
+        num_qc_per_batch_keys = Object.keys(num_qc_per_batch)
+        batches = pData.map(x=>x[batch_index]).filter(unique)
+        batches.shift()
+        
+        for(var b=0;b<batches.length;b++){
+          if(!num_qc_per_batch_keys.includes(batches[b])){
+            num_qc_per_batch[batches[b]] = 0
+          }
+        }
+        
+        
+        if(Object.values(num_qc_per_batch).filter(x=>x<5).length>0){
           var para = document.createElement("p");
           para.setAttribute("style", "color:red;");
           var node = document.createTextNode("Each batch must have at least five qc samples.");
