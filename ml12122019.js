@@ -192,6 +192,7 @@ var f = new PouchDB("https://slfan:metabolomics@serrf.fiehnlab.ucdavis.edu/db/se
           
           
           $("#apply").click(function() {
+            $(".with_validate").hide()
             var d = new Date();
             console.log(d)
             $("#apply").prop("disabled", !0);
@@ -311,14 +312,44 @@ var f = new PouchDB("https://slfan:metabolomics@serrf.fiehnlab.ucdavis.edu/db/se
                       compound_label = fData.map(x=>x[compound_label_index])
                       compound_label.shift();
                       result_datatable = []
-                      for (var i=0; i<ddd.rsds.length;i++){
-                        result_datatable.push({
-                          index: i,
-                          label: compound_label[i],
-                          before_QC_RSD: Number(ddd.before_rsds[i].toFixed(4)),
-                          after_QC_RSD: Number(ddd.rsds[i].toFixed(4))
-                        })
+                      
+                      
+                      
+                      
+                      if(ddd.with_validate){
+                        
+                        $(".with_validate").show()
+                        
+                        $("#rsdvalidateraw").text((jStat.median(ddd.before_validate_rsds)*100).toFixed(2)+"%")
+                        $("#count_less_20_validate_raw").text(ddd.before_validate_rsds.filter(x=>x<0.2).length) 
+                        $("#perc_less_20_validate_raw").text(((ddd.before_validate_rsds.filter(x=>x<0.2).length)/ddd.before_validate_rsds.length * 100).toFixed(2)+"%") 
+                        
+                        $("#rsdvalidateSERRF").text((jStat.median(ddd.after_validate_rsds)*100).toFixed(2)+"%")
+                        $("#count_less_20_validate_SERRF").text(ddd.after_validate_rsds.filter(x=>x<0.2).length) 
+                        $("#perc_less_20_validate_SERRF").text(((ddd.after_validate_rsds.filter(x=>x<0.2).length)/ddd.after_validate_rsds.length * 100).toFixed(2)+"%") 
+                        
+                        for (var i=0; i<ddd.rsds.length;i++){
+                          result_datatable.push({
+                            index: i,
+                            label: compound_label[i],
+                            before_QC_RSD: Number(ddd.before_rsds[i].toFixed(4)),
+                            after_QC_RSD: Number(ddd.rsds[i].toFixed(4)),
+                            before_validate_RSD:Number(ddd.before_validate_rsds[i].toFixed(4)),
+                            after_validate_RSD:Number(ddd.after_validate_rsds[i].toFixed(4))
+                          })
+                        }
+                      }else{
+                        for (var i=0; i<ddd.rsds.length;i++){
+                          result_datatable.push({
+                            index: i,
+                            label: compound_label[i],
+                            before_QC_RSD: Number(ddd.before_rsds[i].toFixed(4)),
+                            after_QC_RSD: Number(ddd.rsds[i].toFixed(4))
+                          })
+                        }
                       }
+                      
+                      
                       
                       
                       
