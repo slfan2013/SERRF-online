@@ -149,10 +149,10 @@ var f = new PouchDB("https://slfan:metabolomics@serrf.fiehnlab.ucdavis.edu/db/se
         }
         
         
-        if(Object.values(num_qc_per_batch).filter(x=>x<8).length>0){
+        if(Object.values(num_qc_per_batch).filter(x=>x<7).length>0){
           var para = document.createElement("p");
           para.setAttribute("style", "color:red;");
-          var node = document.createTextNode("Each batch must have at least five qc samples.");
+          var node = document.createTextNode("Each batch must have at least seven qc samples.");
           para.appendChild(node);
           element.appendChild(para);
           num_error++;
