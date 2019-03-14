@@ -84,7 +84,7 @@ var f = new PouchDB("https://slfan:metabolomics@serrf.fiehnlab.ucdavis.edu/db/se
         if(num_sample<100){
           var para = document.createElement("p");
           para.setAttribute("style", "color:orange;");
-          var node = document.createTextNode("Your dataset has only "+num_sample+" of samples. SERRF may not be the best choice for small datasets.");
+          var node = document.createTextNode("Your data has only "+num_sample+" of samples. SERRF, designed for large-scale dataset, may not be the best choice for your project.");
           para.appendChild(node);
           element.appendChild(para);
         }
