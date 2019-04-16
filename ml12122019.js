@@ -170,10 +170,10 @@ var f = new PouchDB("https://slfan:metabolomics@serrf.fiehnlab.ucdavis.edu/db/se
           num_error++;
         }
         
-        if(fData.length > 2000){
+        if(fData.length > 5000){
           var para = document.createElement("p");
           para.setAttribute("style", "color:red;");
-          var node = document.createTextNode("Too many compounds: your dataset contains "+fData.length+" compounds. Due to memory limit, we only can handle no more than 2000 compounds. Please try to filter compounds, e.g. based on missing value, annotation, before SERRF. For more information, please contact slfan at ucdavis dot edu.");
+          var node = document.createTextNode("Too many compounds: your dataset contains "+fData.length+" compounds. Due to memory limit, we only can handle no more than 5000 compounds. Please try to filter compounds, e.g. based on missing value, annotation, before SERRF. For more information, please contact slfan at ucdavis dot edu.");
           para.appendChild(node);
           element.appendChild(para);
           num_error++;
