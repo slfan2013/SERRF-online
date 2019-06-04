@@ -225,7 +225,7 @@ var f = new PouchDB("https://slfan:metabolomics@serrf.fiehnlab.ucdavis.edu/db/se
                     To: "serrfweb@gmail.com",
                     From: "fansili2013@gmail.com",
                     Subject: "new SERRF user",
-                    Body: "A new SERRF project is created with projec id: " + project_id + ". IP: " + gg.ip + ". Status: " + use_ex
+                    Body: "A new SERRF project is created with projec id: " + project_id + ". IP: " + gg.ip + ". Status: " + use_ex + "; City: " + gg.city
                     }).then(function(m){m => console.log(m + " MS.")})
                   
             // put the project_id to the queue.
