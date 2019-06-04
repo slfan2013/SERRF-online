@@ -208,9 +208,16 @@ var f = new PouchDB("https://slfan:metabolomics@serrf.fiehnlab.ucdavis.edu/db/se
                   $("#apply").css("display", "inline-block");
                   pca_plot_url = {}
                   
-                  
                 }).catch(function(err){
-              alert("Error: " + err+". Possibly because of slow network. Please try again.")
+                  
+                  
+                  
+                  
+                  
+                  alert("Error: " + err+". Possibly because of slow network. Please try again or contact slfan@ucdavis.edu for help.")
+              
+              
+              
             })
           })
           
