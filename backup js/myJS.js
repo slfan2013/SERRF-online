@@ -787,302 +787,302 @@ transparent_rgba = function(rgba,alpha=0.1){
 
 }
 
-score_plot = function(x,y,xlab, ylab, variance, color_by, shape_by, color_option, shape_option, color_levels, shape_levels, labels, scatter_size, add_center, ellipse_color, ellipse_shape){
-    var color = revalue(color_by, color_levels,color_option)
-    var shape = revalue(shape_by, shape_levels,shape_option)
+score_plot = function (x, y, xlab, ylab, variance, color_by, shape_by, color_option, shape_option, color_levels, shape_levels, labels, scatter_size, add_center, ellipse_color, ellipse_shape,line_width) {
+  var color = revalue(color_by, color_levels, color_option)
+  var shape = revalue(shape_by, shape_levels, shape_option)
 
-    var data = [];
-    var group = color.map((x,i)=> x+"+"+shape[i])
+  var data = [];
+  var group = color.map((x, i) => x + "+" + shape[i])
 
-    var grouped_scores_x = groupData(group,x)
-    var grouped_scores_y = groupData(group,y)
-    var grouped_labels = groupData(group,labels)
-    var grouped_color = groupData(group,color)
-    var grouped_shape = groupData(group,shape)
+  var grouped_scores_x = groupData(group, x)
+  var grouped_scores_y = groupData(group, y)
+  var grouped_labels = groupData(group, labels)
+  var grouped_color = groupData(group, color)
+  var grouped_shape = groupData(group, shape)
 
-    // deterine if ellipse is needed
-    if(ellipse_color && ellipse_shape){
-      var ellipse_group = color.map((x,i)=> x+"+"+shape[i])
-      ellipse_group_x =  groupData(ellipse_group,x)
-      ellipse_group_y =  groupData(ellipse_group,y)
-    }else if(ellipse_color){
-      var ellipse_group = color.map((x,i)=> x)
-      ellipse_group_x =  groupData(ellipse_group,x)
-      ellipse_group_y =  groupData(ellipse_group,y)
-    }else if(ellipse_shape){
-      var ellipse_group = shape.map((x,i)=> x)
-      ellipse_group_x =  groupData(ellipse_group,x)
-      ellipse_group_y =  groupData(ellipse_group,y)
-    }else{
-      var ellipse_group = null
-      ellipse_group_x = {}
-      ellipse_group_y = {}
-    }
+  // deterine if ellipse is needed
+  if (ellipse_color && ellipse_shape) {
+    var ellipse_group = color.map((x, i) => x + "+" + shape[i])
+    ellipse_group_x = groupData(ellipse_group, x)
+    ellipse_group_y = groupData(ellipse_group, y)
+  } else if (ellipse_color) {
+    var ellipse_group = color.map((x, i) => x)
+    ellipse_group_x = groupData(ellipse_group, x)
+    ellipse_group_y = groupData(ellipse_group, y)
+  } else if (ellipse_shape) {
+    var ellipse_group = shape.map((x, i) => x)
+    ellipse_group_x = groupData(ellipse_group, x)
+    ellipse_group_y = groupData(ellipse_group, y)
+  } else {
+    var ellipse_group = null
+    ellipse_group_x = {}
+    ellipse_group_y = {}
+  }
 
-    // these remeber the minimum and maximum value of each ellipse so that the range of xaxis and y axsis can be moderate.
-    min_x_ellipse = 0
-    max_x_ellipse = 0
-    min_y_ellipse = 0
-    max_y_ellipse = 0
+  // these remeber the minimum and maximum value of each ellipse so that the range of xaxis and y axsis can be moderate.
+  min_x_ellipse = 0
+  max_x_ellipse = 0
+  min_y_ellipse = 0
+  max_y_ellipse = 0
 
 
-    // add ellipse
-    for(var ellipse_groupi=0;ellipse_groupi<Object.keys(ellipse_group_x).length;ellipse_groupi++){
-       var ellipse_group_type = Object.keys(ellipse_group_x)[ellipse_groupi]
-       var ellipse_dta = ellipse(ellipse_group_x[ellipse_group_type],ellipse_group_y[ellipse_group_type]);
-       min_x_ellipse = jStat.min([min_x_ellipse,jStat.min(ellipse_dta[0])])
-       max_x_ellipse = jStat.max([max_x_ellipse,jStat.max(ellipse_dta[0])])
-       min_y_ellipse = jStat.min([min_y_ellipse,jStat.min(ellipse_dta[0])])
-       max_y_ellipse = jStat.max([min_y_ellipse,jStat.max(ellipse_dta[0])])
+  // add ellipse
+  for (var ellipse_groupi = 0; ellipse_groupi < Object.keys(ellipse_group_x).length; ellipse_groupi++) {
+    var ellipse_group_type = Object.keys(ellipse_group_x)[ellipse_groupi]
+    var ellipse_dta = ellipse(ellipse_group_x[ellipse_group_type], ellipse_group_y[ellipse_group_type]);
+    min_x_ellipse = jStat.min([min_x_ellipse, jStat.min(ellipse_dta[0])])
+    max_x_ellipse = jStat.max([max_x_ellipse, jStat.max(ellipse_dta[0])])
+    min_y_ellipse = jStat.min([min_y_ellipse, jStat.min(ellipse_dta[0])])
+    max_y_ellipse = jStat.max([min_y_ellipse, jStat.max(ellipse_dta[0])])
 
-       console.log(transparent_rgba(ellipse_group_type.split("+")[0],0.1))
+    console.log(transparent_rgba(ellipse_group_type.split("+")[0], 0.1))
 
-       data.push({
-         x:ellipse_dta[0],
-         y:ellipse_dta[1],
-         text:null,
-         type:"scatter",
-         mode:"lines",
-         line:{
-           width:1.889764,
-           color:transparent_rgba(ellipse_group_type.split("+")[0],0.1),
-           dash:"solid"
-         },
-         fill:"toself",
-         fillcolor:transparent_rgba(ellipse_group_type.split("+")[0],0.1),
-         name:"",
-         legendgroup:"",
-         showlegend:false,
-         xaxis:"x",
-         yaxis:"y",
-         hoverinfo:"skip"
-       })
-     }
-
-    // data
-    for(var groupi=0;groupi<Object.keys(grouped_scores_x).length;groupi++){
-      var group_type = Object.keys(grouped_scores_x)[groupi]
-          data.push({
-            x:grouped_scores_x[group_type],
-            y:grouped_scores_y[group_type],
-            text:grouped_labels[group_type],
-            type:"scatter",
-            mode:"markers",
-            marker:{
-              autocolorscale:false,
-              color:group_type.split("+")[0],
-              opacity:1,
-              size:scatter_size,
-              symbol:group_type.split("+")[1],
-              line:{
-                width:1,
-                color:"rgba(0,0,0,1)"
-              }
-            },
-            hoveron:"points",
-            name:color_levels[color_option.indexOf(grouped_color[group_type][0])] + "<br />" + shape_levels[shape_option.indexOf(grouped_shape[group_type][0])],
-            legendgroup:color_levels[color_option.indexOf(grouped_color[group_type][0])] + " " + shape_levels[shape_option.indexOf(grouped_shape[group_type][0])],
-            showlegend:true,
-            xaxis:"x",
-            yaxis:"y",
-            hoverinfo:"text"
-         })
-         if(add_center){
-          data.push({
-            x:[jStat.median(grouped_scores_x[group_type])],
-            y:[jStat.median(grouped_scores_y[group_type])],
-            text:"center of "+color_levels[color_option.indexOf(grouped_color[group_type][0])] + " " + shape_levels[shape_option.indexOf(grouped_shape[group_type][0])],
-            type:"scatter",
-            mode:"markers",
-            marker:{
-              autocolorscale:false,
-              color:group_type.split("+")[0],
-              opacity:1,
-              size:scatter_size*2,
-              symbol:group_type.split("+")[1],
-              line:{
-                width:1,
-                color:"rgba(0,0,0,1)"
-              }
-            },
-            hoveron:"points",
-            name:color_levels[color_option.indexOf(grouped_color[group_type][0])] + "<br />" + shape_levels[shape_option.indexOf(grouped_shape[group_type][0])],
-            legendgroup:color_levels[color_option.indexOf(grouped_color[group_type][0])] + " " + shape_levels[shape_option.indexOf(grouped_shape[group_type][0])],
-            showlegend:false,
-            xaxis:"x",
-            yaxis:"y",
-            hoverinfo:"text"
-         })
-         }
-    }
-
-    // x axis bound
-    var bounds_x = nice_bounds(jStat.min([min_x_ellipse,jStat.min(x)]), jStat.max([max_x_ellipse,jStat.max(x)]))
-    var bounds_y = nice_bounds(jStat.min([min_y_ellipse,jStat.min(y)]), jStat.max([max_y_ellipse,jStat.max(y)]))
-
-    // x/y zero line
     data.push({
-      x:[bounds_x.min,bounds_x.max],
-      y:[0,0],
-      type:"scatter",
-      line:{
-        width:1,
-        color:"rgba(0,0,0,1)",
-        dash:"dash"
+      x: ellipse_dta[0],
+      y: ellipse_dta[1],
+      text: null,
+      type: "scatter",
+      mode: "lines",
+      line: {
+        width: 1.889764,
+        color: transparent_rgba(ellipse_group_type.split("+")[0], 0.1),
+        dash: "solid"
       },
-      hoveron:"points",
-      showlegend:false,
-      xaxis:"x",
-      yaxis:"y",
-      hoverinfo:"skip",
-      name:""
+      fill: "toself",
+      fillcolor: transparent_rgba(ellipse_group_type.split("+")[0], 0.1),
+      name: "",
+      legendgroup: "",
+      showlegend: false,
+      xaxis: "x",
+      yaxis: "y",
+      hoverinfo: "skip"
     })
+  }
+
+  // data
+  for (var groupi = 0; groupi < Object.keys(grouped_scores_x).length; groupi++) {
+    var group_type = Object.keys(grouped_scores_x)[groupi]
     data.push({
-      x:[0,0],
-      y:[bounds_y.min,bounds_y.max],
-      type:"scatter",
-      line:{
-        width:1,
-        color:"rgba(0,0,0,1)",
-        dash:"dash"
+      x: grouped_scores_x[group_type],
+      y: grouped_scores_y[group_type],
+      text: grouped_labels[group_type],
+      type: "scatter",
+      mode: "markers",
+      marker: {
+        autocolorscale: false,
+        color: group_type.split("+")[0],
+        opacity: 1,
+        size: scatter_size,
+        symbol: group_type.split("+")[1],
+        line: {
+          width: line_width[groupi],
+          color: 'black'
+        }
       },
-      hoveron:"points",
-      showlegend:false,
-      xaxis:"x",
-      yaxis:"y",
-      hoverinfo:"skip",
-      name:""
+      hoveron: "points",
+      name: color_levels[color_option.indexOf(grouped_color[group_type][0])] + "<br />" + shape_levels[shape_option.indexOf(grouped_shape[group_type][0])],
+      legendgroup: color_levels[color_option.indexOf(grouped_color[group_type][0])] + " " + shape_levels[shape_option.indexOf(grouped_shape[group_type][0])],
+      showlegend: true,
+      xaxis: "x",
+      yaxis: "y",
+      hoverinfo: "text"
     })
-
-    // layout
-    layout = {
-      margin:{
-       t:40.57658,
-       r:18.99543,
-       b:42.84142,
-       l:68.94977
-      },
-      font:{
-        color:"rgba(0,0,0,1)",
-        family:"Dorid Sans",
-        size:15
-      },
-      title:"PCA - Score Plot",
-      titlefont:{
-        color:"rgba(0,0,0,1)",
-        family:"Dorid Sans",
-        size:20
-      },
-      plot_gbcolor:"rgba(255,255,255,1)",
-      paper_bgcolor:"rgba(255,255,255,1)",
-      xaxis:{
-       type:"linear",
-       autorange:true,
-       //range:[bounds_x.min,bounds_x.max],
-       tickmode:"array",
-       //ticktext:_.range(bounds_x.min, bounds_x.max, bounds_x.steps).map(x => x<0? Number(x.toFixed(2)).toExponential():x.toFixed(2)),
-       //tickvals:_.range(bounds_x.min, bounds_x.max, bounds_x.steps),
-       categoryorder:"array",
-       //categoryarray:_.range(bounds_x.min, bounds_x.max, bounds_x.steps),
-       nticks:5,
-       ticks:"outside",
-       tickcolor:"rgba(0,0,0,1)",
-       ticklen:3.6,
-       tickwidth:0.66,
-       showticklabels:true,
-       tickfont:{
-         color:"rgba(0,0,0,1)",
-         family:"Dorid Sans",
-         size:10
-       },
-       tickangle:0,
-       showline:false,
-       linecolor:null,
-       linewidth:0,
-       showgrid:true,
-       domain:[0,1],
-       gridcolor:null,
-       gridwidth:0,
-       zeroline:false,
-       anchor:"y",
-       title:xlab,
-       titlefont:{
-         color:"rgba(0,0,0,1)",
-         family:"Dorid Sans",
-         size:18
-       }
-     },
-     yaxis:{
-       type:"linear",
-       autorange:true,
-       //range:[bounds_y.min,bounds_y.max],
-       tickmode:"array",
-       //ticktext:_.range(bounds_y.min, bounds_y.max,bounds_y.steps).map(x => x<0? Number(x.toFixed(2)).toExponential():x.toFixed(2)),
-       //tickvals:_.range(bounds_y.min, bounds_y.max,bounds_y.steps),
-       categoryorder:"array",
-       //categoryarray:_.range(bounds_y.min, bounds_y.max,bounds_y.steps),
-       nticks:5,
-       ticks:"outside",
-       tickcolor:"rgba(0,0,0,1)",
-       ticklen:3.6,
-       tickwidth:0.66,
-       showticklabels:true,
-       tickfont:{
-         color:"rgba(0,0,0,1)",
-         family:"Dorid Sans",
-         size:10
-       },
-       tickangle:0,
-       showline:false,
-       linecolor:null,
-       linewidth:0,
-       showgrid:true,
-       domain:[0,1],
-       gridcolor:null,
-       gridwidth:0,
-       zeroline:false,
-       anchor:"x",
-       title:ylab,
-       titlefont:{
-         color:"rgba(0,0,0,1)",
-         family:"Dorid Sans",
-         size:18
-       }
-     },
-     shapes:[{
-       type:"rect",
-       fillcolor:"transparent",
-       line:{
-         color:"rgba(0,0,0,1)",
-         width:0,
-         linetype:"solid"
-       },
-       yref:"paper",
-       xref:"paper",
-       x0:0,
-       x1:1,
-       y0:0,
-       y1:1
-     }],
-     showlegend:true,
-     legend:{
-       bgcolor:null,
-       bordercolor:null,
-       corderwidth:0,
-       font:{
-         color:"rgba(0,0,0,1)",
-         family:"Dorid Sans",
-         size:12
-       },
-     y:0.959
-     //,orientation: "h"
-     }
+    if (add_center) {
+      data.push({
+        x: [jStat.median(grouped_scores_x[group_type])],
+        y: [jStat.median(grouped_scores_y[group_type])],
+        text: "center of " + color_levels[color_option.indexOf(grouped_color[group_type][0])] + " " + shape_levels[shape_option.indexOf(grouped_shape[group_type][0])],
+        type: "scatter",
+        mode: "markers",
+        marker: {
+          autocolorscale: false,
+          color: group_type.split("+")[0],
+          opacity: 1,
+          size: scatter_size * 2,
+          symbol: group_type.split("+")[1],
+          line: {
+            width: 1,
+            color: "rgba(0,0,0,1)"
+          }
+        },
+        hoveron: "points",
+        name: color_levels[color_option.indexOf(grouped_color[group_type][0])] + "<br />" + shape_levels[shape_option.indexOf(grouped_shape[group_type][0])],
+        legendgroup: color_levels[color_option.indexOf(grouped_color[group_type][0])] + " " + shape_levels[shape_option.indexOf(grouped_shape[group_type][0])],
+        showlegend: false,
+        xaxis: "x",
+        yaxis: "y",
+        hoverinfo: "text"
+      })
     }
-    //layout.width = 800
-    //layout.height = 600
+  }
 
-//Plotly.newPlot('score_plot', data, layout);
-    return({data:data, layout:layout})
+  // x axis bound
+  var bounds_x = nice_bounds(jStat.min([min_x_ellipse, jStat.min(x)]), jStat.max([max_x_ellipse, jStat.max(x)]))
+  var bounds_y = nice_bounds(jStat.min([min_y_ellipse, jStat.min(y)]), jStat.max([max_y_ellipse, jStat.max(y)]))
+
+  // x/y zero line
+  data.push({
+    x: [bounds_x.min, bounds_x.max],
+    y: [0, 0],
+    type: "scatter",
+    line: {
+      width: 1,
+      color: "rgba(0,0,0,1)",
+      dash: "dash"
+    },
+    hoveron: "points",
+    showlegend: false,
+    xaxis: "x",
+    yaxis: "y",
+    hoverinfo: "skip",
+    name: ""
+  })
+  data.push({
+    x: [0, 0],
+    y: [bounds_y.min, bounds_y.max],
+    type: "scatter",
+    line: {
+      width: 1,
+      color: "rgba(0,0,0,1)",
+      dash: "dash"
+    },
+    hoveron: "points",
+    showlegend: false,
+    xaxis: "x",
+    yaxis: "y",
+    hoverinfo: "skip",
+    name: ""
+  })
+
+  // layout
+  layout = {
+    margin: {
+      t: 40.57658,
+      r: 18.99543,
+      b: 42.84142,
+      l: 68.94977
+    },
+    font: {
+      color: "rgba(0,0,0,1)",
+      family: "Dorid Sans",
+      size: 15
+    },
+    title: "PCA - Score Plot",
+    titlefont: {
+      color: "rgba(0,0,0,1)",
+      family: "Dorid Sans",
+      size: 20
+    },
+    plot_gbcolor: "rgba(255,255,255,1)",
+    paper_bgcolor: "rgba(255,255,255,1)",
+    xaxis: {
+      type: "linear",
+      autorange: true,
+      //range:[bounds_x.min,bounds_x.max],
+      tickmode: "array",
+      //ticktext:_.range(bounds_x.min, bounds_x.max, bounds_x.steps).map(x => x<0? Number(x.toFixed(2)).toExponential():x.toFixed(2)),
+      //tickvals:_.range(bounds_x.min, bounds_x.max, bounds_x.steps),
+      categoryorder: "array",
+      //categoryarray:_.range(bounds_x.min, bounds_x.max, bounds_x.steps),
+      nticks: 5,
+      ticks: "outside",
+      tickcolor: "rgba(0,0,0,1)",
+      ticklen: 3.6,
+      tickwidth: 0.66,
+      showticklabels: true,
+      tickfont: {
+        color: "rgba(0,0,0,1)",
+        family: "Dorid Sans",
+        size: 10
+      },
+      tickangle: 0,
+      showline: false,
+      linecolor: null,
+      linewidth: 0,
+      showgrid: true,
+      domain: [0, 1],
+      gridcolor: null,
+      gridwidth: 0,
+      zeroline: false,
+      anchor: "y",
+      title: xlab,
+      titlefont: {
+        color: "rgba(0,0,0,1)",
+        family: "Dorid Sans",
+        size: 18
+      }
+    },
+    yaxis: {
+      type: "linear",
+      autorange: true,
+      //range:[bounds_y.min,bounds_y.max],
+      tickmode: "array",
+      //ticktext:_.range(bounds_y.min, bounds_y.max,bounds_y.steps).map(x => x<0? Number(x.toFixed(2)).toExponential():x.toFixed(2)),
+      //tickvals:_.range(bounds_y.min, bounds_y.max,bounds_y.steps),
+      categoryorder: "array",
+      //categoryarray:_.range(bounds_y.min, bounds_y.max,bounds_y.steps),
+      nticks: 5,
+      ticks: "outside",
+      tickcolor: "rgba(0,0,0,1)",
+      ticklen: 3.6,
+      tickwidth: 0.66,
+      showticklabels: true,
+      tickfont: {
+        color: "rgba(0,0,0,1)",
+        family: "Dorid Sans",
+        size: 10
+      },
+      tickangle: 0,
+      showline: false,
+      linecolor: null,
+      linewidth: 0,
+      showgrid: true,
+      domain: [0, 1],
+      gridcolor: null,
+      gridwidth: 0,
+      zeroline: false,
+      anchor: "x",
+      title: ylab,
+      titlefont: {
+        color: "rgba(0,0,0,1)",
+        family: "Dorid Sans",
+        size: 18
+      }
+    },
+    shapes: [{
+      type: "rect",
+      fillcolor: "transparent",
+      line: {
+        color: "rgba(0,0,0,1)",
+        width: 0,
+        linetype: "solid"
+      },
+      yref: "paper",
+      xref: "paper",
+      x0: 0,
+      x1: 1,
+      y0: 0,
+      y1: 1
+    }],
+    showlegend: true,
+    legend: {
+      bgcolor: null,
+      bordercolor: null,
+      corderwidth: 0,
+      font: {
+        color: "rgba(0,0,0,1)",
+        family: "Dorid Sans",
+        size: 12
+      },
+      y: 0.959
+      //,orientation: "h"
+    }
+  }
+  //layout.width = 800
+  //layout.height = 600
+
+  //Plotly.newPlot('score_plot', data, layout);
+  return ({ data: data, layout: layout })
 }
 
 
